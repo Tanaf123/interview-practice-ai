@@ -2,7 +2,7 @@ import React from 'react';
 import HeroSection from '../components/HeroSection';
 import Navbar from '../components/Navbar';
 import HowItWorks from '../components/HowItWorks';
-import CompaniesSection from '../components/CompaniesSection';
+import CompanyRoleBrowser from '../components/CompanyRoleBrowser';
 
 export default function Home() {
   return (
@@ -12,7 +12,7 @@ export default function Home() {
         <HeroSection />
       </div>
       <HowItWorks />
-      <CompaniesSection />
+      <CompanyRoleBrowser />
     </main>
   );
 } 
