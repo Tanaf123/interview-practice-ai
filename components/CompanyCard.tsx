@@ -1,60 +1,78 @@
-import React, { useState } from 'react';
-import RoleCard from './RoleCard';
-
-interface Role {
-  id: string;
-  title: string;
-  description: string;
-  difficulty: 'Beginner' | 'Intermediate' | 'Advanced';
-  rating: number;
-}
+import React from 'react';
+import Image from 'next/image';
+import { Badge } from './ui/badge';
+import { Card, CardContent, CardFooter, CardHeader } from './ui/card';
+import { Button } from './ui/button';
 
 interface CompanyCardProps {
   id: string;
   name: string;
   logo: string;
-  roles: Role[];
+  summary: string;
+  industry: string;
+  roleTypes: string[];
+  difficulty: 'Easy' | 'Medium' | 'Hard';
+  hasNewRoles: boolean;
 }
 
-export default function CompanyCard({ id, name, logo, roles }: CompanyCardProps) {
-  const [isExpanded, setIsExpanded] = useState(false);
-
+export function CompanyCard({
+  id,
+  name,
+  logo,
+  summary,
+  industry,
+  roleTypes,
+  difficulty,
+  hasNewRoles,
+}: CompanyCardProps) {
   return (
-    <div className="bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow duration-200 overflow-hidden">
-      {/* Company Header */}
-      <div 
-        className="p-6 cursor-pointer"
-        onClick={() => setIsExpanded(!isExpanded)}
-      >
-        <div className="flex items-center space-x-4">
-          <img 
-            src={logo} 
-            alt={`${name} logo`} 
-            className="w-12 h-12 object-contain"
-          />
-          <div className="flex-1">
-            <h3 className="text-xl font-semibold text-gray-900">{name}</h3>
-            <p className="text-sm text-gray-500">{roles.length} roles available</p>
+    <Card className="flex flex-col h-full hover:shadow-lg transition-shadow duration-200">
+      <CardHeader className="flex-none">
+        <div className="flex items-center justify-between mb-4">
+          <div className="relative w-16 h-16">
+            <Image
+              src={logo}
+              alt={`${name} logo`}
+              fill
+              className="object-contain"
+            />
           </div>
-          <svg 
-            className={`w-6 h-6 text-gray-400 transform transition-transform duration-200 ${isExpanded ? 'rotate-180' : ''}`}
-            fill="none" 
-            viewBox="0 0 24 24" 
-            stroke="currentColor"
-          >
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-          </svg>
+          {hasNewRoles && (
+            <Badge variant="secondary" className="bg-green-100 text-green-800">
+              New Roles
+            </Badge>
+          )}
         </div>
-      </div>
-
-      {/* Roles List */}
-      {isExpanded && (
-        <div className="border-t border-gray-100 p-6 space-y-4">
-          {roles.map((role) => (
-            <RoleCard key={role.id} {...role} />
-          ))}
+        <h3 className="text-xl font-semibold mb-2">{name}</h3>
+        <p className="text-sm text-gray-600 mb-4">{summary}</p>
+      </CardHeader>
+      <CardContent className="flex-grow">
+        <div className="space-y-3">
+          <div>
+            <span className="text-sm font-medium text-gray-500">Industry</span>
+            <p className="text-sm">{industry}</p>
+          </div>
+          <div>
+            <span className="text-sm font-medium text-gray-500">Role Types</span>
+            <div className="flex flex-wrap gap-2 mt-1">
+              {roleTypes.map((type) => (
+                <Badge key={type} variant="outline">
+                  {type}
+                </Badge>
+              ))}
+            </div>
+          </div>
+          <div>
+            <span className="text-sm font-medium text-gray-500">Difficulty</span>
+            <p className="text-sm">{difficulty}</p>
+          </div>
         </div>
-      )}
-    </div>
+      </CardContent>
+      <CardFooter className="flex-none pt-4">
+        <Button className="w-full" variant="default">
+          View Roles
+        </Button>
+      </CardFooter>
+    </Card>
   );
 } 

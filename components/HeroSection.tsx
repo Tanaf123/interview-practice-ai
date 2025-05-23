@@ -1,6 +1,19 @@
 import React from 'react';
+import { useRouter } from 'next/router';
+import { useAuth } from '../lib/auth';
 
 export default function HeroSection() {
+  const router = useRouter();
+  const { user } = useAuth();
+
+  const handleStartInterview = () => {
+    if (!user) {
+      router.push('/login');
+    } else {
+      router.push('/interview');
+    }
+  };
+
   return (
     <div className="min-h-screen flex flex-col items-center justify-center text-center">
       {/* Hero Section */}
@@ -17,7 +30,10 @@ export default function HeroSection() {
 
         {/* CTA Button */}
         <div className="pt-6">
-          <button className="bg-purple-600 hover:bg-purple-700 text-white font-medium py-3 px-8 rounded-md text-lg transition-colors duration-200">
+          <button
+            onClick={handleStartInterview}
+            className="bg-purple-600 hover:bg-purple-700 text-white font-medium py-3 px-8 rounded-md text-lg transition-colors duration-200"
+          >
             Start Interview
           </button>
         </div>
